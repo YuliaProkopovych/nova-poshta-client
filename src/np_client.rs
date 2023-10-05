@@ -1,5 +1,5 @@
 use reqwest::{Client, Response};
-use serde_with::{serde_as, skip_serializing_none, DisplayFromStr};
+use serde_with::{serde_as, skip_serializing_none};
 use url::Url;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
@@ -24,11 +24,12 @@ use settlements::Settlement;
 #[serde(
     tag = "calledMethod",
     content = "methodProperties",
-    rename_all_fields = "PascalCase"
+    rename_all_fields = "PascalCase",
+    rename_all = "camelCase"
 )]
 pub enum Method<'a> {
-    getStatusDocuments { documents: Vec<Document> },
-    getWarehouses {
+    GetStatusDocuments { documents: Vec<Document> },
+    GetWarehouses {
         city_name: Option<String>,
         city_ref: Option<Uuid>,
         page: Option<u16>,
@@ -38,13 +39,13 @@ pub enum Method<'a> {
         #[serde(skip_serializing_if = "Option::is_none")]
         bicycle_parking: Option<u16>,
     },
-    getCities {
+    GetCities {
         r#ref: Option<Uuid>,
         page: Option<u16>,
         find_by_string: Option<&'a str>,
         limit: Option<u16>,
     },
-    searchSettlements {
+    SearchSettlements {
         city_name: &'a str,
         limit: u16,
         page: u16,
@@ -118,7 +119,6 @@ impl NPClient {
     }
 
     pub fn with_api_key(api_key: String) -> Result<Self, reqwest::Error> {
-        let new_client = Self::default();
         let client = Client::builder()
             .timeout(std::time::Duration::from_secs(5))
             .build()?;
@@ -158,7 +158,7 @@ impl NPClient {
         let res = self
             .send_request(
                 Models::Address,
-                Method::searchSettlements {
+                Method::SearchSettlements {
                     page,
                     limit,
                     city_name,
@@ -173,7 +173,7 @@ impl NPClient {
         let res = self
             .send_request(
                 Models::TrackingDocument,
-                Method::getStatusDocuments {
+                Method::GetStatusDocuments {
                     documents: vec![Document::new(
                         ENumber::try_from(en).unwrap(),
                         phone_number.to_owned(),
@@ -190,7 +190,7 @@ impl NPClient {
         let res = self
             .send_request(
                 Models::Address,
-                Method::getCities {
+                Method::GetCities {
                     page,
                     limit,
                     r#ref: city_ref,
@@ -215,7 +215,7 @@ impl NPClient {
         let res = self
             .send_request(
                 Models::Address,
-                Method::getWarehouses { 
+                Method::GetWarehouses { 
                     city_name,
                     city_ref,
                     page,
