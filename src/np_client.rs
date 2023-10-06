@@ -20,7 +20,7 @@ use en::ENumber;
 use cities::City;
 use tracking::{Document, TrackingDoc};
 use settlements::{Settlements, Streets};
-use counterparty::{Counterparty, ContactPerson};
+use counterparty::{Counterparty, ContactPerson, CounterpartyAddress};
 
 #[serde_as]
 #[derive(Debug, Serialize)]
@@ -32,6 +32,10 @@ use counterparty::{Counterparty, ContactPerson};
     rename_all = "camelCase"
 )]
 pub enum Method<'a> {
+    GetCounterpartyAddresses {
+        r#ref: Uuid,
+        counterparty_property: Option<CounterpartyRole>,
+    },
     GetCounterpartyContactPersons {
         page: Option<u16>,
         r#ref: Uuid,
@@ -331,7 +335,7 @@ impl NPClient {
     pub async fn get_counterparty_contact_persons(
         &self, 
         c_ref: Uuid, 
-        page:Option<u16>,
+        page: Option<u16>,
     ) -> Result<ResponseTemplate<ContactPerson>, reqwest::Error> {
         let res = self
         .send_request(
@@ -339,6 +343,25 @@ impl NPClient {
             Method::GetCounterpartyContactPersons { 
                 page, 
                 r#ref: c_ref, 
+            }
+        )
+        .await?;
+
+        let res_data = res.json().await;
+        res_data
+    }
+
+    pub async fn get_counterparty_addresses(
+        &self, 
+        counterparty_property: Option<&str>, 
+        counterparty_ref: Uuid,
+    ) -> Result<ResponseTemplate<CounterpartyAddress>, reqwest::Error> {
+        let res = self
+        .send_request(
+            Models::Counterparty,
+            Method::GetCounterpartyAddresses { 
+                counterparty_property: counterparty_property.map(|val| CounterpartyRole::try_from(val).unwrap()), 
+                r#ref: counterparty_ref, 
             }
         )
         .await?;

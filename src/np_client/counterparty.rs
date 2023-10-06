@@ -33,3 +33,18 @@ pub struct ContactPerson {
     phones: Option<String>,
     email: Option<String>,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct CounterpartyAddress {
+    r#ref: Uuid,
+    description: String,
+    city_ref: Uuid,
+    city_description: String,
+    street_ref: Uuid,
+    street_description: String,
+    building_ref: Uuid,
+    building_description: String,
+    note: String,
+    address_name: String,
+}
