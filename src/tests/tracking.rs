@@ -1,4 +1,4 @@
-use crate::np_client::{NPClient, NPResponse};
+use crate::np_client::{NPClient, ResponseTemplate as NPResponseTemplate};
 
 use serde_json::json;
 use wiremock::{
@@ -103,7 +103,7 @@ async fn tracking_request_invalid_en() {
         }
     });
 
-    let r: NPResponse = serde_json::from_str(
+    let r: NPResponseTemplate<()> = serde_json::from_str(
         r#"
         {
             "success": false,

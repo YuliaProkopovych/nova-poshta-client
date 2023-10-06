@@ -25,7 +25,7 @@ pub struct Settlement {
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct StreetInfo {
+pub struct Street {
     settlement_ref: Uuid,
     settlement_street_ref: Uuid,
     settlement_street_description: String,
@@ -34,4 +34,18 @@ pub struct StreetInfo {
     streets_type_description: String,
     location: Coordinates,
     settlement_street_description_ru: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct Settlements {
+    total_count: u16,
+    addresses: Vec<Settlement>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct Streets {
+    total_count: u16,
+    addresses: Vec<Street>,
 }

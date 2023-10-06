@@ -19,9 +19,8 @@ use warehouses::Warehouse;
 use en::ENumber;
 use cities::City;
 use tracking::{Document, TrackingDoc};
-use settlements::{Settlement, StreetInfo};
+use settlements::{Settlements, Streets};
 use counterparty::Counterparty;
-use res_template::ResponseTemplate;
 
 #[serde_as]
 #[derive(Debug, Serialize)]
@@ -82,9 +81,9 @@ pub struct NPClient {
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct NPResponse {
+pub struct ResponseTemplate<NPData> {
     pub success: bool,
-    pub data: Vec<Data>,
+    pub data: Vec<NPData>,
     pub errors: Vec<String>,
     pub warnings: Vec<serde_json::Value>,
     pub info: serde_json::Value,
@@ -92,23 +91,6 @@ pub struct NPResponse {
     pub error_codes: Vec<String>,
     pub warning_codes: Vec<String>,
     pub info_codes: Vec<serde_json::Value>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all_fields = "PascalCase")]
-#[serde(untagged)]
-pub enum Data {
-    Tracking(TrackingDoc),
-    Warehouse(Warehouse),
-    City(City),
-    Settlements {
-        total_count: u16,
-        addresses: Vec<Settlement>,
-    },
-    SettlementStreets {
-        total_count: u16,
-        addresses: Vec<StreetInfo>,
-    },
 }
 
 #[derive(Debug, Serialize)]
@@ -178,7 +160,12 @@ impl NPClient {
             .await
     }
 
-    pub async fn search_settlements(&self, city_name: &str, page: u16, limit: u16) -> Result<NPResponse, reqwest::Error> {
+    pub async fn search_settlements(
+        &self, 
+        city_name: &str, 
+        page: u16, 
+        limit: u16,
+    ) -> Result<ResponseTemplate<Settlements>, reqwest::Error> {
         let res = self
             .send_request(
                 Models::Address,
@@ -198,7 +185,7 @@ impl NPClient {
         street_name: &str, 
         settlement_ref: Uuid, 
         limit: Option<u16>,
-    ) -> Result<NPResponse, reqwest::Error> {
+    ) -> Result<ResponseTemplate<Streets>, reqwest::Error> {
         let res = self
         .send_request(
             Models::Address,
@@ -214,7 +201,7 @@ impl NPClient {
         res_data
     }
 
-    pub async fn get_tracking(&self, en: String, phone_number: String) -> Result<NPResponse, reqwest::Error> {
+    pub async fn get_tracking(&self, en: String, phone_number: String) -> Result<ResponseTemplate<TrackingDoc>, reqwest::Error> {
         let res = self
             .send_request(
                 Models::TrackingDocument,
@@ -231,7 +218,13 @@ impl NPClient {
         res_data
     }
 
-    pub async fn get_cities(&self, page: Option<u16>, limit: Option<u16>, city_ref: Option<Uuid>, find_by_string: Option<&str>) -> Result<NPResponse, reqwest::Error> {
+    pub async fn get_cities(
+        &self, 
+        page: Option<u16>, 
+        limit: Option<u16>, 
+        city_ref: Option<Uuid>, 
+        find_by_string: Option<&str>,
+    ) -> Result<ResponseTemplate<City>, reqwest::Error> {
         let res = self
             .send_request(
                 Models::Address,
@@ -256,7 +249,7 @@ impl NPClient {
         bicycle_parking: Option<u16>,
         type_of_warehouse_ref: Option<Uuid>,
         warehouse_id: Option<u16>,
-    ) -> Result<NPResponse, reqwest::Error> {
+    ) -> Result<ResponseTemplate<Warehouse>, reqwest::Error> {
         let res = self
             .send_request(
                 Models::Address,
