@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use serde::{Serialize, Deserialize};
 use uuid::Uuid;
-use serde_with::{serde_as, BoolFromInt, DisplayFromStr, NoneAsEmptyString};
+use serde_with::{serde_as, DisplayFromStr, NoneAsEmptyString};
 
 use super::date_format::common_date_format;
 use super::deserializer::deserialize_bool_from_str_num;
@@ -29,7 +29,7 @@ struct Schedule {
 #[serde_as]
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
-struct Coordinates {
+pub struct Coordinates {
     #[serde(alias = "lat")]
     #[serde_as(as = "DisplayFromStr")]
     latitude: f32,
