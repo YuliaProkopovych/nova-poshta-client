@@ -1,6 +1,6 @@
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use serde_with::{serde_as, skip_serializing_none, DisplayFromStr, NoneAsEmptyString};
+use serde_with::{serde_as, DisplayFromStr, NoneAsEmptyString};
 use uuid::Uuid;
 
 use super::date_format::{common_date_format, np_date_format};

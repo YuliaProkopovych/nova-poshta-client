@@ -15,8 +15,7 @@ use warehouses::Warehouse;
 use en::ENumber;
 use cities::City;
 use tracking::{Document, TrackingDoc};
-use settlements::Settlement;
-
+use settlements::{Settlement, StreetInfo};
 
 #[serde_as]
 #[derive(Debug, Serialize)]
@@ -49,6 +48,11 @@ pub enum Method<'a> {
         city_name: &'a str,
         limit: u16,
         page: u16,
+    },
+    SearchSettlementStreets {
+        street_name: &'a str,
+        settlement_ref: Uuid,
+        limit: Option<u16>,
     },
 }
 
@@ -85,6 +89,10 @@ pub enum Data {
     Settlements {
         total_count: u16,
         addresses: Vec<Settlement>,
+    },
+    SettlementStreets {
+        total_count: u16,
+        addresses: Vec<StreetInfo>,
     },
 }
 
@@ -165,6 +173,27 @@ impl NPClient {
                 },
             )
             .await?;
+        let res_data = res.json().await;
+        res_data
+    }
+
+    pub async fn search_streets(
+        &self, 
+        street_name: &str, 
+        settlement_ref: Uuid, 
+        limit: Option<u16>,
+    ) -> Result<NPResponse, reqwest::Error> {
+        let res = self
+        .send_request(
+            Models::Address,
+            Method::SearchSettlementStreets { 
+                street_name, 
+                settlement_ref, 
+                limit,
+            } ,
+        )
+        .await?;
+
         let res_data = res.json().await;
         res_data
     }

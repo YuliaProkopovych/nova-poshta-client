@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
+use super::warehouses::Coordinates;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
@@ -20,4 +21,17 @@ pub struct Settlement {
     parent_region_code: String,
     region_types: String,
     region_types_code: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct StreetInfo {
+    settlement_ref: Uuid,
+    settlement_street_ref: Uuid,
+    settlement_street_description: String,
+    present: String,
+    streets_type: Uuid,
+    streets_type_description: String,
+    location: Coordinates,
+    settlement_street_description_ru: String,
 }
