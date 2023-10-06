@@ -14,10 +14,12 @@ pub struct Counterparty {
     last_name: String,
     counterparty: Option<String>,
     ownership_form: Option<String>,
+    ownership_form_ref: Option<String>,
     ownership_form_description: Option<String>,
     EDRPOU: Option<String>,
     counterparty_type: CounterpartyType,
-    contact_person: ResponseTemplate<ContactPerson>,
+    contact_person: Option<ResponseTemplate<ContactPerson>>,
+    city: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -29,5 +31,3 @@ pub struct ContactPerson {
     middle_name: String,
     last_name: String,
 }
-
-

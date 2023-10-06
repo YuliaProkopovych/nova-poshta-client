@@ -41,6 +41,11 @@ pub enum Method<'a> {
         email: &'a str,
         phone: &'a str,
     },
+    GetCounterparties {
+        page: Option<u16>,
+        find_by_string: Option<&'a str>,
+        counterparty_property: CounterpartyRole,
+    },
     GetStatusDocuments { documents: Vec<Document> },
     GetWarehouses {
         city_name: Option<String>,
@@ -290,6 +295,28 @@ impl NPClient {
                 email,
                 phone,
             },
+        )
+        .await?;
+
+        let res_data = res.json().await;
+        res_data
+    }
+
+    pub async fn get_counterparties(
+        &self, 
+        find_by_string: Option<&str>,
+        page: Option<u16>,
+        counterparty_property: &str,
+    ) ->  Result<ResponseTemplate<Counterparty>, reqwest::Error> {
+
+        let res = self
+        .send_request(
+            Models::Counterparty,
+            Method::GetCounterparties { 
+                page, 
+                find_by_string, 
+                counterparty_property: CounterpartyRole::try_from(counterparty_property).unwrap(), 
+            }
         )
         .await?;
 

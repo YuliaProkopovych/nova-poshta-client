@@ -12,3 +12,15 @@ pub enum CounterpartyRole {
     Recipient,
     ThirdPerson,
 }
+
+impl TryFrom<&str> for CounterpartyRole {
+    type Error = String;
+    fn try_from(value: &str) -> Result<Self, String> {
+        match value {
+            "Sender" => Ok(Self::Sender),
+            "Recepient" => Ok(Self::Recipient),
+            "ThirdPerson" => Ok(Self::ThirdPerson),
+            _ => Err("Invalid value".to_owned())
+        }
+    }
+}
