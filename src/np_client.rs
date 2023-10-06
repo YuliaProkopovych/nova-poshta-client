@@ -5,17 +5,23 @@ use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 
 mod date_format;
+mod counterparty;
+mod helper_structs;
 mod en;
 mod tracking;
 mod cities;
 mod deserializer;
 mod warehouses;
 mod settlements;
+mod res_template;
+use helper_structs::{CounterpartyType, CounterpartyRole};
 use warehouses::Warehouse;
 use en::ENumber;
 use cities::City;
 use tracking::{Document, TrackingDoc};
 use settlements::{Settlement, StreetInfo};
+use counterparty::Counterparty;
+use res_template::ResponseTemplate;
 
 #[serde_as]
 #[derive(Debug, Serialize)]
@@ -27,6 +33,15 @@ use settlements::{Settlement, StreetInfo};
     rename_all = "camelCase"
 )]
 pub enum Method<'a> {
+    Save { 
+        counterparty_property: CounterpartyRole,
+        counterparty_type: CounterpartyType,
+        first_name: &'a str,
+        middle_name: &'a str,
+        last_name: &'a str,
+        email: &'a str,
+        phone: &'a str,
+    },
     GetStatusDocuments { documents: Vec<Document> },
     GetWarehouses {
         city_name: Option<String>,
@@ -100,6 +115,7 @@ pub enum Data {
 pub enum Models {
     TrackingDocument,
     Address,
+    Counterparty,
 }
 
 #[derive(Debug, Serialize)]
@@ -255,6 +271,34 @@ impl NPClient {
                 },
             )
             .await?;
+
+        let res_data = res.json().await;
+        res_data
+    }
+
+    pub async fn create_counterparty(
+        &self, 
+        first_name: &str,
+        middle_name: &str,
+        last_name: &str,
+        phone: &str,
+        email: &str,
+    ) -> Result<ResponseTemplate<Counterparty>, reqwest::Error> {
+
+        let res = self
+        .send_request(
+            Models::Counterparty,
+            Method::Save { 
+                counterparty_property: CounterpartyRole::Recipient,
+                counterparty_type: CounterpartyType::PrivatePerson,
+                first_name,
+                middle_name,
+                last_name,
+                email,
+                phone,
+            },
+        )
+        .await?;
 
         let res_data = res.json().await;
         res_data

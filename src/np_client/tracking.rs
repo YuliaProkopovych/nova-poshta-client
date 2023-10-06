@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 use super::date_format::{common_date_format, np_date_format};
 use super::en::ENumber;
+use super::helper_structs::{CounterpartyType, CounterpartyRole};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "PascalCase")]
@@ -20,19 +21,6 @@ impl Document {
             phone,
         }
     }
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-enum CounterpartyType {
-    PrivatePerson,
-    Organization,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-enum Payer {
-    Sender,
-    Recipient,
-    ThirdPerson,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -116,7 +104,7 @@ struct RedeliveryInfo {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
 struct PaymentInfo {
-    payer_type: Payer,
+    payer_type: CounterpartyRole,
     #[serde_as(as = "NoneAsEmptyString")]
     payment_status: Option<String>,
     #[serde(deserialize_with = "deserialize_f32_option")]
