@@ -1,0 +1,113 @@
+{
+	"success": true,
+	"data": [
+		{
+			"TotalCount": 6,
+			"Addresses": [
+				{
+					"Present": "м. Немирів, Немирівський р-н, Вінницька обл.",
+					"Warehouses": 6,
+					"MainDescription": "Немирів",
+					"Area": "Вінницька",
+					"Region": "Немирівський",
+					"SettlementTypeCode": "м.",
+					"Ref": "e71b7679-4b33-11e4-ab6d-005056801329",
+					"DeliveryCity": "69da4154-3f5d-11de-b509-001d92f78698",
+					"AddressDeliveryAllowed": true,
+					"StreetsAvailability": false,
+					"ParentRegionTypes": "область",
+					"ParentRegionCode": "обл.",
+					"RegionTypes": "район",
+					"RegionTypesCode": "р-н"
+				},
+				{
+					"Present": "смт. Немирів, Яворівський р-н, Львівська обл.",
+					"Warehouses": 2,
+					"MainDescription": "Немирів",
+					"Area": "Львівська",
+					"Region": "Яворівський",
+					"SettlementTypeCode": "смт.",
+					"Ref": "0df6e66e-4b3a-11e4-ab6d-005056801329",
+					"DeliveryCity": "d3fc0057-7e9b-11e3-b441-0050568002cf",
+					"AddressDeliveryAllowed": true,
+					"StreetsAvailability": false,
+					"ParentRegionTypes": "область",
+					"ParentRegionCode": "обл.",
+					"RegionTypes": "район",
+					"RegionTypesCode": "р-н"
+				},
+				{
+					"Present": "с. Немирівка, Радивилівський р-н, Рівненська обл.",
+					"Warehouses": 2,
+					"MainDescription": "Немирівка",
+					"Area": "Рівненська",
+					"Region": "Радивилівський",
+					"SettlementTypeCode": "с.",
+					"Ref": "0e2b3a30-4b3a-11e4-ab6d-005056801329",
+					"DeliveryCity": "1b3307eb-5f76-11ec-80fb-b8830365bd04",
+					"AddressDeliveryAllowed": true,
+					"StreetsAvailability": false,
+					"ParentRegionTypes": "область",
+					"ParentRegionCode": "обл.",
+					"RegionTypes": "район",
+					"RegionTypesCode": "р-н"
+				},
+				{
+					"Present": "с. Немирівське, Балтський р-н, Одеська обл.",
+					"Warehouses": 2,
+					"MainDescription": "Немирівське",
+					"Area": "Одеська",
+					"Region": "Балтський",
+					"SettlementTypeCode": "с.",
+					"Ref": "0dc1281c-4b3a-11e4-ab6d-005056801329",
+					"DeliveryCity": "8db8ee61-7fef-11ea-a970-b8830365ade4",
+					"AddressDeliveryAllowed": true,
+					"StreetsAvailability": false,
+					"ParentRegionTypes": "область",
+					"ParentRegionCode": "обл.",
+					"RegionTypes": "район",
+					"RegionTypesCode": "р-н"
+				},
+				{
+					"Present": "с. Немирівка, Коростенський р-н, Житомирська обл.",
+					"Warehouses": 0,
+					"MainDescription": "Немирівка",
+					"Area": "Житомирська",
+					"Region": "Коростенський",
+					"SettlementTypeCode": "с.",
+					"Ref": "0e4218ce-4b3a-11e4-ab6d-005056801329",
+					"DeliveryCity": "db5c8924-391c-11dd-90d9-001a92567626",
+					"AddressDeliveryAllowed": true,
+					"StreetsAvailability": false,
+					"ParentRegionTypes": "область",
+					"ParentRegionCode": "обл.",
+					"RegionTypes": "район",
+					"RegionTypesCode": "р-н"
+				},
+				{
+					"Present": "с. Немирівка, Старокостянтинівський р-н, Хмельницька обл.",
+					"Warehouses": 0,
+					"MainDescription": "Немирівка",
+					"Area": "Хмельницька",
+					"Region": "Старокостянтинівський",
+					"SettlementTypeCode": "с.",
+					"Ref": "0eb977a9-4b3a-11e4-ab6d-005056801329",
+					"DeliveryCity": "db5c8982-391c-11dd-90d9-001a92567626",
+					"AddressDeliveryAllowed": true,
+					"StreetsAvailability": false,
+					"ParentRegionTypes": "область",
+					"ParentRegionCode": "обл.",
+					"RegionTypes": "район",
+					"RegionTypesCode": "р-н"
+				}
+			]
+		}
+	],
+	"errors": [],
+	"warnings": [],
+	"info": [],
+	"messageCodes": [],
+	"errorCodes": [],
+	"warningCodes": [],
+	"infoCodes": []
+}
