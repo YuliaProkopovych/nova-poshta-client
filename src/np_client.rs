@@ -9,7 +9,7 @@ mod address;
 pub mod en;
 pub mod helper_structs;
 pub mod res_template;
-mod settlements;
+pub mod internet_document;
 mod tracking;
 
 const URL: &str = "https://api.novaposhta.ua/v2.0/json/";
@@ -73,6 +73,10 @@ impl NPClient {
 
     pub fn counterparty(&self) -> counterparty::CounterpartyHandler {
         counterparty::CounterpartyHandler::new(self)
+    }
+
+    pub fn i_document(&self) -> internet_document::IDocumentHandler {
+        internet_document::IDocumentHandler::new(self)
     }
 
 }

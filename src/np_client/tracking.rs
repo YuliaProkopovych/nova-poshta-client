@@ -8,7 +8,7 @@ use super::{NPClient, NPRequest};
 use super::date_format::{common_date_format, np_date_format};
 use super::deserializer::{deserialize_f32_option, deserialize_u16_option};
 use super::en::ENumber;
-use super::helper_structs::{CounterpartyRole, CounterpartyType};
+use super::helper_structs::{CounterpartyRole, CounterpartyType, PaymentMethod, ServiceType};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "PascalCase")]
@@ -24,17 +24,6 @@ impl Document {
             phone,
         }
     }
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-enum ServiceType {
-    WarehouseWarehouse,
-}
-#[derive(Debug, Deserialize, Serialize)]
-enum PaymentMethod {
-    Cash,
-    Card,
-    NonCash,
 }
 
 #[serde_as]

@@ -37,3 +37,27 @@ pub struct Coordinates {
     #[serde_as(as = "DisplayFromStr")]
     longitude: f32,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+pub enum ServiceType {
+    DoorsDoors,
+    DoorsWarehouse,
+    WarehouseWarehouse,
+    WarehouseDoors,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub enum PaymentMethod {
+    Cash,
+    Card,
+    NonCash,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub enum CargoType {
+    Parcel,
+    Cargo,
+    Documents,
+    TiresWheels,
+    Pallet,
+}
