@@ -160,21 +160,4 @@ impl<'cli> CreateCounterpartyBuilder<'cli, Name, Phone, CounterpartyRole, Counte
     }
 }
 
-    // pub async fn get_counterparties(
-    //     &self,
-    //     find_by_string: Option<&str>,
-    //     page: Option<u16>,
-    //     counterparty_property: &str,
-    // ) -> Result<ResponseTemplate<Counterparty>, reqwest::Error> {
-    //     let res = self
-    //         .send_request(Model::Counterparty(CounterpartyMethod::GetCounterparties {
-    //             page,
-    //             find_by_string,
-    //             counterparty_property: CounterpartyRole::try_from(counterparty_property).unwrap(),
-    //         }))
-    //         .await?;
-
-    //     let res_data = res.json().await;
-    //     res_data
-    // }
 
