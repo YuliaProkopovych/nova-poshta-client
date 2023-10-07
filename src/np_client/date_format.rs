@@ -1,5 +1,5 @@
 pub mod common_date_format {
-    use chrono::{DateTime, FixedOffset, NaiveDateTime, NaiveDate, NaiveTime};
+    use chrono::{DateTime, FixedOffset, NaiveDate, NaiveDateTime, NaiveTime};
     use serde::{self, Deserialize, Deserializer, Serializer};
 
     const FORMAT1: &'static str = "%Y-%m-%d %H:%M:%S";
@@ -35,7 +35,8 @@ pub mod common_date_format {
             .or(NaiveDateTime::parse_from_str(&s, FORMAT2))
             .or(NaiveDateTime::parse_from_str(&s, FORMAT3))
             .or(NaiveDateTime::parse_from_str(&s, FORMAT4))
-            .or(NaiveDate::parse_from_str(&s, FORMAT5).map(|date| date.and_time(NaiveTime::default())))
+            .or(NaiveDate::parse_from_str(&s, FORMAT5)
+                .map(|date| date.and_time(NaiveTime::default())))
             .map(|date| Some(date))
             .map_err(serde::de::Error::custom);
         res

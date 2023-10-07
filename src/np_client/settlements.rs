@@ -1,6 +1,6 @@
+use super::helper_structs::Coordinates;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use super::warehouses::Coordinates;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]

@@ -1,8 +1,19 @@
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+use self::addresses::GetAddressesBuilder;
+use self::contact_persons::{ContactPerson, GetContactPersonsBuilder};
+use self::counterparties::GetCounterpartiesBuilder;
+use self::create::{CreateCounterpartyBuilder, NoName, NoPhone, NoType, NoRole};
+
+use super::NPClient;
 use super::helper_structs::CounterpartyType;
 use super::res_template::ResponseTemplate;
+
+mod addresses;
+mod contact_persons;
+mod create;
+mod counterparties;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
@@ -22,29 +33,31 @@ pub struct Counterparty {
     city: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "PascalCase")]
-pub struct ContactPerson {
-    r#ref: Uuid,
-    description: String,
-    first_name: String,
-    middle_name: String,
-    last_name: String,
-    phones: Option<String>,
-    email: Option<String>,
+pub struct CounterpartyHandler<'c> {
+    client: &'c NPClient,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "PascalCase")]
-pub struct CounterpartyAddress {
-    r#ref: Uuid,
-    description: String,
-    city_ref: Uuid,
-    city_description: String,
-    street_ref: Uuid,
-    street_description: String,
-    building_ref: Uuid,
-    building_description: String,
-    note: String,
-    address_name: String,
+impl<'cli> CounterpartyHandler<'cli> {
+    pub(crate) fn new(client: &'cli NPClient) -> Self {
+        Self { 
+            client
+        }
+    }
+
+    pub fn get_addresses(&self, cp_ref: Uuid) -> GetAddressesBuilder<'cli> {
+        GetAddressesBuilder::new(self.client, cp_ref)
+    }
+
+    pub fn get_counterparties(&self) -> GetCounterpartiesBuilder<'cli> {
+        GetCounterpartiesBuilder::new(self.client)
+    }
+
+    pub fn get_contact_persons(&self, cp_ref: Uuid) -> GetContactPersonsBuilder<'cli> {
+        GetContactPersonsBuilder::new(self.client, cp_ref)
+    }
+
+    pub fn create_counterparty(&self) -> CreateCounterpartyBuilder<'cli, NoName, NoPhone, NoRole, NoType> {
+        CreateCounterpartyBuilder::new(self.client)
+    }
+
 }

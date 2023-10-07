@@ -1,0 +1,27 @@
+{
+	"success": true,
+	"data": [
+		{
+			"Ref": "39633d8b-645f-11ee-a60f-48df37b921db",
+			"Description": "Тролейбусна вул. 7",
+			"CityRef": "db5c88f5-391c-11dd-90d9-001a92567626",
+			"CityDescription": "Львів",
+			"StreetRef": "778517ed-4159-11dd-9198-001d60451983",
+			"StreetDescription": "Тролейбусна",
+			"BuildingRef": "0001a5b8-d7ea-11ea-8513-b88303659df5",
+			"BuildingDescription": "7",
+			"Note": "3 подьезд",
+			"AddressName": "",
+			"MarketplacePartnerDescription": "Мобільний додаток"
+		}
+	],
+	"errors": [],
+	"warnings": [],
+	"info": {
+		"totalCount": 1
+	},
+	"messageCodes": [],
+	"errorCodes": [],
+	"warningCodes": [],
+	"infoCodes": []
+}

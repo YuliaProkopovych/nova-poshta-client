@@ -3,9 +3,12 @@ use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr, NoneAsEmptyString};
 use uuid::Uuid;
 
+use super::res_template::ResponseTemplate;
+use super::{NPClient, NPRequest};
 use super::date_format::{common_date_format, np_date_format};
+use super::deserializer::{deserialize_f32_option, deserialize_u16_option};
 use super::en::ENumber;
-use super::helper_structs::{CounterpartyType, CounterpartyRole};
+use super::helper_structs::{CounterpartyRole, CounterpartyType};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "PascalCase")]
@@ -237,58 +240,62 @@ pub struct TrackingDoc {
     free_shipping: Option<String>,
 }
 
-fn deserialize_f32_option<'de, D>(deserializer: D) -> Result<Option<f32>, D::Error>
-where
-    D: serde::de::Deserializer<'de>,
-{
-    let s: serde_json::Value = serde::de::Deserialize::deserialize(deserializer)?;
+pub struct TrackingHandler<'c> {
+    client: &'c NPClient,
+}
 
-    if s.is_number() {
-        return s.to_string().parse::<f32>()
-            .map(|val| Some(val))
-            .map_err(|_| serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"]))
+impl<'cli> TrackingHandler<'cli> {
+    pub(crate) fn new(client: &'cli NPClient) -> Self {
+        Self { client }
     }
-    if s.is_string() {
-        if s.as_str().unwrap().is_empty() {
-            return Ok(None)
-        } else {
-            return s.as_str().unwrap().parse::<f32>()
-            .map(|val| Some(val))
-            .map_err(|_| serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"]))
-        }
-        
+
+    pub fn track_parcel(&self, en: ENumber, phone: String) -> TrackParcelBuilder<'cli> {
+        TrackParcelBuilder::new(self.client, en, phone)
     }
-    if s.is_null() {
-        return Ok(None)
-    }
-    Err(serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"]))
 
 }
 
-fn deserialize_u16_option<'de, D>(deserializer: D) -> Result<Option<u16>, D::Error>
-where
-    D: serde::de::Deserializer<'de>,
-{
-    let s: serde_json::Value = serde::de::Deserialize::deserialize(deserializer)?;
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct TrackParcelBuilder<'cli> {
+    #[serde(skip)]
+    client: &'cli NPClient,
 
-    if s.is_number() {
-        return s.to_string().parse::<u16>()
-            .map(|val| Some(val))
-            .map_err(|_| serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"]))
-    }
-    if s.is_string() {
-        if s.as_str().unwrap().is_empty() {
-            return Ok(None)
-        } else {
-            return s.as_str().unwrap().parse::<u16>()
-            .map(|val| Some(val))
-            .map_err(|_| serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"]))
+    documents: Vec<Document>,
+}
+
+impl<'cli> TrackParcelBuilder<'cli> {
+    pub fn new(client: &'cli NPClient, en: ENumber, phone_number: String) -> Self {
+        Self {
+            client,
+            documents: vec![Document::new(
+                ENumber::try_from(en).unwrap(),
+                phone_number.to_owned(),
+            )],
         }
-        
     }
-    if s.is_null() {
-        return Ok(None)
-    }
-    Err(serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"]))
 
+    pub fn add_document(mut self, en: ENumber, phone_number: String) -> Self {
+        self.documents.push(
+            Document::new(en, phone_number)
+        );
+        self
+    }
+
+    pub async fn send(self) -> Result<ResponseTemplate<TrackingDoc>, reqwest::Error> {
+        let request = NPRequest {
+            api_key: &self.client.api_key,
+            model_name: "TrackingDocument",
+            called_method: "getStatusDocuments",
+            method_properties: &self
+        };
+        let url = (&self.client.base_url).to_owned();
+        self.client.http_client
+            .post(url)
+            .json(&request)
+            .send()
+            .await?
+            .json()
+            .await
+    }
 }

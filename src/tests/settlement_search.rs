@@ -2,7 +2,7 @@ use crate::np_client::NPClient;
 
 use serde_json::json;
 use wiremock::{
-    matchers::{method, path, body_partial_json},
+    matchers::{body_partial_json, method, path},
     Mock, MockServer, ResponseTemplate,
 };
 
@@ -25,21 +25,21 @@ async fn search_settlements_request_ok() {
     Mock::given(path("/"))
         .and(method("POST"))
         .and(body_partial_json(&expected_body))
-        .respond_with(
-            ResponseTemplate::new(200).set_body_raw(
-                include_str!("resources/settlement_search_response.json"),
-                "application/json"
-            )
-        )
+        .respond_with(ResponseTemplate::new(200).set_body_raw(
+            include_str!("resources/settlement_search_response.json"),
+            "application/json",
+        ))
         .expect(1)
         .mount(&mock_server)
         .await;
 
-    let res = np_client.search_settlements(
-        "львів",
-        1,
-        10,
-    ).await;
+    let res = np_client
+        .address()
+        .search_settlements("львів".to_owned())
+        .page(1)
+        .limit(10)
+        .send()
+        .await;
 
     assert!(res.is_ok());
     assert!(res.unwrap().success);
