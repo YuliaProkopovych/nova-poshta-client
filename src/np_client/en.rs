@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 
@@ -18,27 +20,10 @@ impl From<ENumber> for String {
     }
 }
 
-impl TryFrom<String> for ENumber {
-    type Error = ENumberPasingError;
+impl FromStr for ENumber {
+    type Err = ENumberPasingError;
 
-    fn try_from(value: String) -> Result<Self, Self::Error> {
-        if value.len() != 14 {
-            return Err(ENumberPasingError::InvalidLength);
-        }
-        let email_regex = Regex::new(r"[0-9+]").unwrap();
-
-        if email_regex.is_match(&value) {
-            Ok(Self(value))
-        } else {
-            Err(ENumberPasingError::InvalidSymbols)
-        }
-    }
-}
-
-impl TryFrom<&str> for ENumber {
-    type Error = ENumberPasingError;
-
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
         if value.len() != 14 {
             return Err(ENumberPasingError::InvalidLength);
         }

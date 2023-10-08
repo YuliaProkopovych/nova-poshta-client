@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use crate::np_client::{NPClient, en::ENumber};
 use crate::np_client::res_template::ResponseTemplate as NPResponseTemplate;
 
@@ -39,7 +41,7 @@ async fn tracking_request_ok() {
 
     let res = np_client
         .tracking()
-        .track_parcel(ENumber::try_from("20450777813966").unwrap(), "380123456787".to_owned())
+        .track_parcel(ENumber::from_str("20450777813966").unwrap(), "380123456787".to_owned())
         .send()
         .await;
 
@@ -79,7 +81,7 @@ async fn tracking_request_without_phone() {
 
     let res = np_client
         .tracking()
-        .track_parcel(ENumber::try_from("20450777813966").unwrap(), "".to_owned())
+        .track_parcel(ENumber::from_str("20450777813966").unwrap(), "".to_owned())
         .send()
         .await;
 
@@ -138,7 +140,7 @@ async fn tracking_request_invalid_en() {
 
     let res = np_client
         .tracking()
-        .track_parcel(ENumber::try_from("20450777813966").unwrap(), "".to_owned())
+        .track_parcel(ENumber::from_str("20450777813966").unwrap(), "".to_owned())
         .send()
         .await;
 
