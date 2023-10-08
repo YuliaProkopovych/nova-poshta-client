@@ -4,6 +4,12 @@ use serde_with::{serde_as, DisplayFromStr};
 use uuid::Uuid;
 use phonenumber::{self, PhoneNumber};
 
+use super::date_format::id_date_format;
+use super::{NPClient, NPRequest};
+use super::en::ENumber;
+use super::helper_structs::{CounterpartyRole, PaymentMethod, ServiceType, CargoType, CounterpartyID, CityID, AddressID, ContactPersonID};
+use super::res_template::ResponseTemplate;
+
 #[serde_as]
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
@@ -15,12 +21,6 @@ pub struct IDocument {
     int_doc_number: ENumber,
     type_document: String,
 }
-
-use super::date_format::id_date_format;
-use super::{NPClient, NPRequest};
-use super::en::ENumber;
-use super::helper_structs::{CounterpartyRole, PaymentMethod, ServiceType, CargoType};
-use super::res_template::ResponseTemplate;
 
 pub struct IDocumentHandler<'c> {
     client: &'c NPClient,
@@ -42,34 +42,24 @@ impl<'cli> IDocumentHandler<'cli> {
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct RecepientInfo {
-    city_recipient: Uuid, 
-    recipient: Uuid, 
-    recipient_address: Uuid, 
+    city_recipient: CityID, 
+    recipient: CounterpartyID, 
+    recipient_address: AddressID, 
     #[serde_as(as = "DisplayFromStr")]
     recipients_phone: PhoneNumber,
-    contact_recipient: Uuid,
+    contact_recipient: ContactPersonID,
 }
 
 #[serde_as]
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct SenderInfo {
-    city_sender: Uuid, 
-    sender: Uuid,
-    sender_address: Uuid, 
-    contact_sender: Uuid,
+    city_sender: CityID, 
+    sender: CounterpartyID,
+    sender_address: AddressID, 
+    contact_sender: ContactPersonID,
     #[serde_as(as = "DisplayFromStr")]
     senders_phone: PhoneNumber,
-}
-
-pub enum Address {
-    CityWarehouse {
-        city_sender: Uuid,
-        sender_address: Uuid,
-    },
-    Address {
-        sender_adderss: Uuid,
-    }
 }
 
 #[serde_as]
@@ -168,10 +158,10 @@ impl<'cli, G, R> CreateIDocumentBuilder<'cli, G, NoSenderInfo, R>
 {
     pub fn sender_info(
         self, 
-        city_sender: Uuid, 
-        sender: Uuid,
-        sender_address: Uuid, 
-        contact_sender: Uuid,
+        city_sender: CityID, 
+        sender: CounterpartyID,
+        sender_address: AddressID, 
+        contact_sender: ContactPersonID,
         senders_phone: PhoneNumber,
     ) -> CreateIDocumentBuilder<'cli, G, SenderInfo, R> {
         CreateIDocumentBuilder {
@@ -195,10 +185,10 @@ impl<'cli, G, S> CreateIDocumentBuilder<'cli, G, S, NoRecipientInfo>
 {
     pub fn recipient_info(
         self, 
-        city_recipient: Uuid, 
-        recipient: Uuid, 
-        recipient_address: Uuid, 
-        contact_recipient: Uuid,
+        city_recipient: CityID, 
+        recipient: CounterpartyID, 
+        recipient_address: AddressID, 
+        contact_recipient: ContactPersonID,
         recipients_phone: PhoneNumber,
     ) -> CreateIDocumentBuilder<'cli, G, S, RecepientInfo> {
         CreateIDocumentBuilder {

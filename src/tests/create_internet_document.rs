@@ -1,9 +1,10 @@
-use crate::np_client::{NPClient, helper_structs::{CounterpartyRole, PaymentMethod, CargoType, ServiceType}};
+use std::str::FromStr;
+
+use crate::np_client::{NPClient, helper_structs::{CounterpartyRole, PaymentMethod, CargoType, ServiceType, CityID, CounterpartyID, ContactPersonID, AddressID}};
 
 use chrono::NaiveDate;
 use phonenumber::country::Id::UA;
 use serde_json::json;
-use uuid::Uuid;
 use wiremock::{
     matchers::{body_partial_json, method, path},
     Mock, MockServer, ResponseTemplate,
@@ -68,18 +69,18 @@ async fn create_internet_document_ok() {
             120,
         )
         .sender_info(
-            Uuid::parse_str("db5c88d4-391c-11dd-90d9-001a92567626").unwrap(),
-            Uuid::parse_str("57f2c3c2-596f-11ee-a60f-48df37b921db").unwrap(),
-            Uuid::parse_str("1ec09d2d-e1c2-11e3-8c4a-0050568002cf").unwrap(),
-            Uuid::parse_str("57f35831-596f-11ee-a60f-48df37b921db").unwrap(),
+            CityID::from_str("db5c88d4-391c-11dd-90d9-001a92567626").unwrap(),
+            CounterpartyID::from_str("57f2c3c2-596f-11ee-a60f-48df37b921db").unwrap(),
+            AddressID::from_str("1ec09d2d-e1c2-11e3-8c4a-0050568002cf").unwrap(),
+            ContactPersonID::from_str("57f35831-596f-11ee-a60f-48df37b921db").unwrap(),
             phonenumber::parse(Some(UA), "380660000001").unwrap()
             
         )
         .recipient_info(
-            Uuid::parse_str("db5c88d4-391c-11dd-90d9-001a92567626").unwrap(),
-            Uuid::parse_str("580c30f7-596f-11ee-a60f-48df37b921db").unwrap(),
-            Uuid::parse_str("39633d8b-645f-11ee-a60f-48df37b921db").unwrap(),
-            Uuid::parse_str("c1ffd9b4-643e-11ee-a60f-48df37b921db").unwrap(),
+            CityID::from_str("db5c88d4-391c-11dd-90d9-001a92567626").unwrap(),
+            CounterpartyID::from_str("580c30f7-596f-11ee-a60f-48df37b921db").unwrap(),
+            AddressID::from_str("39633d8b-645f-11ee-a60f-48df37b921db").unwrap(),
+            ContactPersonID::from_str("c1ffd9b4-643e-11ee-a60f-48df37b921db").unwrap(),
             phonenumber::parse(Some(UA), "380660000000").unwrap()
         )
         .send()

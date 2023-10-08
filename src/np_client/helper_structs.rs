@@ -1,5 +1,8 @@
+use std::str::FromStr;
+
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
+use uuid::Uuid;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub enum CounterpartyType {
@@ -60,4 +63,48 @@ pub enum CargoType {
     Documents,
     TiresWheels,
     Pallet,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CityID (Uuid);
+
+impl FromStr for CityID {
+    type Err = uuid::Error;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        Ok(CityID(Uuid::parse_str(value)?))
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CounterpartyID (Uuid);
+
+impl FromStr for CounterpartyID {
+    type Err = uuid::Error;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        Ok(CounterpartyID(Uuid::parse_str(value)?))
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ContactPersonID (Uuid);
+
+impl FromStr for ContactPersonID {
+    type Err = uuid::Error;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        Ok(ContactPersonID(Uuid::parse_str(value)?))
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct AddressID (Uuid);
+
+impl FromStr for AddressID {
+    type Err = uuid::Error;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        Ok(AddressID(Uuid::parse_str(value)?))
+    }
 }
