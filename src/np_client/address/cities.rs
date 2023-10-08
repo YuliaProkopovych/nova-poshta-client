@@ -100,9 +100,9 @@ impl<'cli> GetCitiesBuilder<'cli> {
             called_method: "getCities",
             method_properties: &self
         };
-        let url = (&self.client.base_url).to_owned();
+
         self.client.http_client
-            .post(url)
+            .post(self.client.base_url.clone())
             .json(&request)
             .send()
             .await?
