@@ -31,8 +31,9 @@ pub struct City {
     is_branch: bool,
     #[serde(deserialize_with = "deserialize_bool_from_str_num")]
     prevent_entry_new_streets_user: bool,
+    #[serde(rename = "CityID")]
     #[serde_as(as = "DisplayFromStr")]
-    city_ID: u16,
+    city_id: u16,
     settlement_type_description: String,
     settlement_type_description_ru: String,
     #[serde_as(as = "BoolFromInt")]

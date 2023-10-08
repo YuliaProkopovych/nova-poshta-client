@@ -27,7 +27,8 @@ pub struct Counterparty {
     ownership_form: Option<String>,
     ownership_form_ref: Option<String>,
     ownership_form_description: Option<String>,
-    EDRPOU: Option<String>,
+    #[serde(rename = "EDRPOU")]
+    edrpou: Option<String>,
     counterparty_type: CounterpartyType,
     contact_person: Option<ResponseTemplate<ContactPerson>>,
     city: Option<String>,

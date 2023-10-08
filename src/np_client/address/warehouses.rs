@@ -62,7 +62,8 @@ pub struct Warehouse {
     #[serde(deserialize_with = "deserialize_bool_from_str_num")]
     payment_access: bool,
     #[serde(deserialize_with = "deserialize_bool_from_str_num")]
-    POS_terminal: bool,
+    #[serde(rename = "POSTerminal")]
+    pos_terminal: bool,
     #[serde(deserialize_with = "deserialize_bool_from_str_num")]
     international_shipping: bool,
     #[serde(deserialize_with = "deserialize_bool_from_str_num")]
@@ -80,7 +81,6 @@ pub struct Warehouse {
     warehouse_status: String,
     #[serde(with = "common_date_format")]
     warehouse_status_date: Option<NaiveDateTime>,
-    //warehouse_illusha: String,
     category_of_warehouse: String,
     #[serde_as(as = "NoneAsEmptyString")]
     direct: Option<String>,
@@ -105,7 +105,8 @@ pub struct Warehouse {
     only_receiving_parcel: bool,
     #[serde_as(as = "NoneAsEmptyString")]
     post_machine_type: Option<String>,
-    postal_code_UA: String,
+    #[serde(rename = "PostalCodeUA")]
+    postal_code_ua: String,
     warehouse_index: String,
     #[serde_as(as = "NoneAsEmptyString")]
     beacon_code: Option<String>,
