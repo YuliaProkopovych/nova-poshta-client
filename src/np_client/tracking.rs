@@ -258,8 +258,8 @@ impl<'cli> TrackParcelBuilder<'cli> {
         Self {
             client,
             documents: vec![Document::new(
-                ENumber::try_from(en).unwrap(),
-                phone_number.to_owned(),
+                en,
+                phone_number,
             )],
         }
     }
