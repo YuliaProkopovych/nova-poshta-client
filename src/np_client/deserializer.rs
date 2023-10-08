@@ -33,18 +33,26 @@ where
             });
     }
     if s.is_string() {
-        if s.as_str().unwrap().is_empty() {
-            return Ok(None);
-        } else {
-            return s
-                .as_str()
-                .unwrap()
-                .parse::<f32>()
+        return match s.as_str().unwrap() {
+            s if s.is_empty() => Ok(None),
+            s => s.parse::<f32>()
                 .map(|val| Some(val))
                 .map_err(|_| {
                     serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"])
-                });
+                })
         }
+        // if s.as_str().unwrap().is_empty() {
+        //     return Ok(None);
+        // } else {
+        //     return s
+        //         .as_str()
+        //         .unwrap()
+        //         .parse::<f32>()
+        //         .map(|val| Some(val))
+        //         .map_err(|_| {
+        //             serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"])
+        //         });
+        // }
     }
     if s.is_null() {
         return Ok(None);
@@ -71,17 +79,13 @@ where
             });
     }
     if s.is_string() {
-        if s.as_str().unwrap().is_empty() {
-            return Ok(None);
-        } else {
-            return s
-                .as_str()
-                .unwrap()
-                .parse::<u16>()
+        return match s.as_str().unwrap() {
+            s if s.is_empty() => Ok(None),
+            s => s.parse::<u16>()
                 .map(|val| Some(val))
                 .map_err(|_| {
                     serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"])
-                });
+                })
         }
     }
     if s.is_null() {

@@ -27,9 +27,9 @@ impl FromStr for ENumber {
         if value.len() != 14 {
             return Err(ENumberPasingError::InvalidLength);
         }
-        let email_regex = Regex::new(r"[0-9+]").unwrap();
+        let en_regex = Regex::new(r"[0-9+]").unwrap();
 
-        if email_regex.is_match(&value) {
+        if en_regex.is_match(&value) {
             Ok(Self(value.to_owned()))
         } else {
             Err(ENumberPasingError::InvalidSymbols)
