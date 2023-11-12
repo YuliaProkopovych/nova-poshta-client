@@ -1,0 +1,44 @@
+{
+	"success": true,
+	"data": [
+		{
+			"Ref": "580c30f7-596f-11ee-a60f-48df37b921db",
+			"Description": "Приватна особа",
+			"FirstName": "Іван",
+			"MiddleName": "Іванович",
+			"LastName": "Іван",
+			"Counterparty": "",
+			"OwnershipForm": "",
+			"OwnershipFormDescription": "",
+			"EDRPOU": "",
+			"CounterpartyType": "PrivatePerson",
+			"ContactPerson": {
+				"success": true,
+				"data": [
+					{
+						"Ref": "2423983c-6428-11ee-a60f-48df37b921db",
+						"Description": "Іван Іван Іванович",
+						"LastName": "Іван",
+						"FirstName": "Іван",
+						"MiddleName": "Іванович"
+					}
+				],
+				"errors": [],
+				"translatedErrors": [],
+				"warnings": [],
+				"info": [],
+				"messageCodes": [],
+				"errorCodes": [],
+				"warningCodes": [],
+				"infoCodes": []
+			}
+		}
+	],
+	"errors": [],
+	"warnings": [],
+	"info": [],
+	"messageCodes": [],
+	"errorCodes": [],
+	"warningCodes": [],
+	"infoCodes": []
+}

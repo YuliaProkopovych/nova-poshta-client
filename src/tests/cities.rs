@@ -2,7 +2,7 @@ use crate::np_client::NPClient;
 
 use serde_json::json;
 use wiremock::{
-    matchers::{method, path, body_partial_json},
+    matchers::{body_partial_json, method, path},
     Mock, MockServer, ResponseTemplate,
 };
 
@@ -25,22 +25,22 @@ async fn get_cities_request_ok() {
     Mock::given(path("/"))
         .and(method("POST"))
         .and(body_partial_json(&expected_body))
-        .respond_with(
-            ResponseTemplate::new(200).set_body_raw(
-                include_str!("resources/cities_response.json"),
-                "application/json"
-            )
-        )
+        .respond_with(ResponseTemplate::new(200).set_body_raw(
+            include_str!("resources/cities_response.json"),
+            "application/json",
+        ))
         .expect(1)
         .mount(&mock_server)
         .await;
 
-    let res = np_client.get_cities(
-        Some(1),
-        Some(10),
-        None,
-        Some("львів"),
-    ).await;
+    let res = np_client
+        .address()
+        .get_cities()
+        .page(1)
+        .limit(10)
+        .find_by_string("львів".to_owned())
+        .send()
+        .await;
 
     assert!(res.is_ok());
     assert!(res.unwrap().success);
@@ -83,25 +83,22 @@ async fn get_cities_request_invalid_string() {
     Mock::given(path("/"))
         .and(method("POST"))
         .and(body_partial_json(&expected_body))
-        .respond_with(
-            ResponseTemplate::new(200).set_body_raw(
-                res,
-                "application/json"
-            )
-        )
+        .respond_with(ResponseTemplate::new(200).set_body_raw(res, "application/json"))
         .expect(1)
         .mount(&mock_server)
         .await;
 
-    let res = np_client.get_cities(
-        Some(1),
-        Some(10),
-        None,
-        Some("invalid value"),
-    ).await;
+    let res = np_client
+        .address()
+        .get_cities()
+        .page(1)
+        .limit(10)
+        .find_by_string("invalid value".to_owned())
+        .send()
+        .await;
 
     assert!(res.is_ok());
-    let res = res.unwrap(); 
+    let res = res.unwrap();
     assert!(!res.success);
     assert_eq!(res.data.len(), 0);
     assert_eq!(res.error_codes.len(), 1);

@@ -1,0 +1,34 @@
+{
+	"success": true,
+	"data": [
+		{
+			"Description": "Антонич Богдан Ігор",
+			"Phones": "380999999099",
+			"Email": "test@test.com",
+			"Ref": "c1ffd9b4-643e-11ee-a60f-48df37b921db",
+			"LastName": "Антонич",
+			"FirstName": "Богдан",
+			"MiddleName": "Ігор",
+			"MarketplacePartnerDescription": "Мобільний додаток"
+		},
+		{
+			"Description": "Іван Іван Іванович",
+			"Phones": "380997979780",
+			"Email": "test@i.com",
+			"Ref": "2423983c-6428-11ee-a60f-48df37b921db",
+			"LastName": "Іван",
+			"FirstName": "Іван",
+			"MiddleName": "Іванович",
+			"MarketplacePartnerDescription": "Мобільний додаток"
+		}
+	],
+	"errors": [],
+	"warnings": [],
+	"info": {
+		"totalCount": 2
+	},
+	"messageCodes": [],
+	"errorCodes": [],
+	"warningCodes": [],
+	"infoCodes": []
+}
