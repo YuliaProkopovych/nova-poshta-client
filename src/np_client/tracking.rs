@@ -6,7 +6,7 @@ use uuid::Uuid;
 use super::res_template::ResponseTemplate;
 use super::{NPClient, NPRequest};
 use super::date_format::{common_date_format, np_date_format};
-use super::deserializer::{deserialize_f32_option, deserialize_u16_option};
+use super::deserializer::{deserialize_f64_option, deserialize_u16_option};
 use super::en::ENumber;
 use super::helper_structs::{CounterpartyRole, CounterpartyType, PaymentMethod, ServiceType};
 
@@ -31,8 +31,8 @@ impl Document {
 #[serde(rename_all = "PascalCase")]
 struct Redelivery {
     redelivery: u8,
-    #[serde(deserialize_with = "deserialize_f32_option")]
-    redelivery_sum: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f64_option")]
+    redelivery_sum: Option<f64>,
     redelivery_num: String,
     #[serde_as(as = "NoneAsEmptyString")]
     redelivery_payer: Option<String>,
@@ -85,8 +85,8 @@ struct RecipientInfo {
 #[serde(rename_all = "PascalCase")]
 struct RedeliveryInfo {
     redelivery: u8,
-    #[serde(deserialize_with = "deserialize_f32_option")]
-    redelivery_sum: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f64_option")]
+    redelivery_sum: Option<f64>,
     redelivery_num: String,
     #[serde_as(as = "NoneAsEmptyString")]
     redelivery_payer: Option<String>,
@@ -99,18 +99,18 @@ struct PaymentInfo {
     payer_type: CounterpartyRole,
     #[serde_as(as = "NoneAsEmptyString")]
     payment_status: Option<String>,
-    #[serde(deserialize_with = "deserialize_f32_option")]
-    afterpayment_on_goods_cost: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f64_option")]
+    afterpayment_on_goods_cost: Option<f64>,
     #[serde(with = "common_date_format")]
     payment_status_date: Option<NaiveDateTime>,
-    #[serde(deserialize_with = "deserialize_f32_option")]
-    amount_to_pay: Option<f32>,
-    #[serde(deserialize_with = "deserialize_f32_option")]
-    amount_paid: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f64_option")]
+    amount_to_pay: Option<f64>,
+    #[serde(deserialize_with = "deserialize_f64_option")]
+    amount_paid: Option<f64>,
     secure_payment: bool,
     payment_method: PaymentMethod,
-    #[serde(deserialize_with = "deserialize_f32_option")]
-    announced_price: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f64_option")]
+    announced_price: Option<f64>,
     possibility_change_cash_2_card: bool,
 }
 
@@ -157,7 +157,7 @@ pub struct TrackingDoc {
     document_cost: f32,
     #[serde_as(as = "NoneAsEmptyString")]
     calculated_weight: Option<String>,
-    sum_before_check_weight: Option<f32>,
+    sum_before_check_weight: Option<f64>,
     #[serde(with = "common_date_format")]
     scheduled_delivery_date: Option<NaiveDateTime>,
     cargo_description_string: String,
@@ -190,8 +190,8 @@ pub struct TrackingDoc {
     #[serde_as(as = "NoneAsEmptyString")]
     card_masked_number: Option<String>,
     express_waybill_payment_status: String,
-    #[serde(deserialize_with = "deserialize_f32_option")]
-    express_waybill_amount_to_pay: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f64_option")]
+    express_waybill_amount_to_pay: Option<f64>,
     #[serde(with = "common_date_format")]
     tracking_update_date: Option<NaiveDateTime>,
     date_return_cargo: Option<String>,
@@ -206,7 +206,7 @@ pub struct TrackingDoc {
     postomat_v3_cell_reservation_number: bool,
     #[serde_as(as = "NoneAsEmptyString")]
     owner_document_number: Option<String>,
-    last_amount_received_commission_g_m: Option<f32>,
+    last_amount_received_commission_g_m: Option<f64>,
     #[serde_as(as = "NoneAsEmptyString")]
     delivery_timeframe: Option<String>,
     #[serde_as(as = "NoneAsEmptyString")]
@@ -223,8 +223,8 @@ pub struct TrackingDoc {
     partial_return_goods: Option<Vec<String>>,
     #[serde(deserialize_with = "deserialize_u16_option")]
     storage_amount: Option<u16>,
-    #[serde(deserialize_with = "deserialize_f32_option")]
-    storage_price: Option<f32>,
+    #[serde(deserialize_with = "deserialize_f64_option")]
+    storage_price: Option<f64>,
     #[serde_as(as = "NoneAsEmptyString")]
     free_shipping: Option<String>,
 }

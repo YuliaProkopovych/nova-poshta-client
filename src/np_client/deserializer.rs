@@ -17,42 +17,24 @@ where
     }
 }
 
-pub fn deserialize_f32_option<'de, D>(deserializer: D) -> Result<Option<f32>, D::Error>
+pub fn deserialize_f64_option<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error>
 where
     D: serde::de::Deserializer<'de>,
 {
     let s: serde_json::Value = serde::de::Deserialize::deserialize(deserializer)?;
 
     if s.is_number() {
-        return s
-            .to_string()
-            .parse::<f32>()
-            .map(|val| Some(val))
-            .map_err(|_| {
-                serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"])
-            });
+        return Ok(s.as_f64());
     }
     if s.is_string() {
         return match s.as_str().unwrap() {
             s if s.is_empty() => Ok(None),
-            s => s.parse::<f32>()
+            s => s.parse::<f64>()
                 .map(|val| Some(val))
                 .map_err(|_| {
                     serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"])
                 })
         }
-        // if s.as_str().unwrap().is_empty() {
-        //     return Ok(None);
-        // } else {
-        //     return s
-        //         .as_str()
-        //         .unwrap()
-        //         .parse::<f32>()
-        //         .map(|val| Some(val))
-        //         .map_err(|_| {
-        //             serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"])
-        //         });
-        // }
     }
     if s.is_null() {
         return Ok(None);
@@ -71,12 +53,12 @@ where
 
     if s.is_number() {
         return s
-            .to_string()
-            .parse::<u16>()
-            .map(|val| Some(val))
-            .map_err(|_| {
+            .as_i64()
+            
+            .ok_or(
                 serde::de::Error::unknown_variant(&s.to_string(), &["number or empty string"])
-            });
+            )
+            .map(|val| u16::try_from(val).ok());
     }
     if s.is_string() {
         return match s.as_str().unwrap() {
