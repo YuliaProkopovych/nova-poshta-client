@@ -16,3 +16,10 @@ regex = "1.9.1"
 wiremock = "0.5.19"
 thiserror = "1.0.49"
 phonenumber = "0.3.3+8.13.9"
+
+[dev-dependencies]
+criterion = { version = "0.5.1", features = ["html_reports"] }
+
+[[bench]]
+name = "bench"
+harness = false

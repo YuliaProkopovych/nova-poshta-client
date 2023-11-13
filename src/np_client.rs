@@ -10,7 +10,7 @@ pub mod en;
 pub mod helper_structs;
 pub mod res_template;
 pub mod internet_document;
-mod tracking;
+pub mod tracking;
 
 const URL: &str = "https://api.novaposhta.ua/v2.0/json/";
 
